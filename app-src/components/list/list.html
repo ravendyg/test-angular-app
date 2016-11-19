@@ -1,0 +1,65 @@
+<div class="preloader-bar" ng-if="lsCtrl.showPreloader">
+  <md-icon md-menu-align-target md-svg-icon="preloader"></md-icon>
+</div>
+
+<md-content ng-if="!lsCtrl.showPreloader">
+  <div layout="row">
+    <md-input-container style="margin-right: 10px;">
+      <label>Order by</label>
+      <md-select ng-model="lsCtrl.orderField">
+        <md-option ng-repeat="label in lsCtrl.orderOptions" value="{{label}}">{{label}}</md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container style="margin-right: 10px;" ng-if="lsCtrl.orderField">
+      <label>Direction</label>
+      <md-select ng-model="lsCtrl.orderDirection">
+        <md-option ng-repeat="direction in lsCtrl.orderDirections" value="{{direction}}">{{direction}}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div layout="row">
+    <md-input-container style="margin-right: 10px;">
+      <label>Filter by category</label>
+      <md-select ng-model="lsCtrl.appliedCategoryFilter">
+        <md-option ng-repeat="category in lsCtrl.availableCategories" value="{{category}}">{{category}}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div layout="row">
+    <md-input-container style="margin-right: 10px;">
+      <label>Page size</label>
+      <md-select ng-model="lsCtrl.pageSize">
+        <md-option ng-repeat="size in lsCtrl.availablePageSizes" value="{{size}}">{{size}}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <md-list>
+    <div class="md-list-item-text" layout="row">
+      <div flex="20">Title</div>
+      <div flex="20">Created</div>
+      <div flex="20">Category</div>
+      <div flex="20">Amount</div>
+      <div flex="20">SKU</div>
+    </div>
+
+    <md-list-item
+      class="md-6-line"
+      ng-repeat="item in lsCtrl.pagedItems track by item.id"
+    >
+      <md-button class="md-no-style" ui-sref="item({id: item.id})">
+        <div class="md-list-item-text" layout="row">
+          <div flex="20">{{item.name}}</div>
+          <div flex="20">{{item.date | UnixDateToDotString}}</div>
+          <div flex="20">{{item.categoryName}}</div>
+          <div flex="20">{{item.amount | AmountToWord}}</div>
+          <div flex="20">{{item.sku}}</div>
+        </div>
+      </md-button>
+    </md-list-item>
+  </md-list>
+
+</md-content>

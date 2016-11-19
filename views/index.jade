@@ -1,0 +1,16 @@
+doctype html
+html(lang="en", ng-app="cft")
+  head
+    meta(name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.5/angular-material.min.css")
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css")
+
+    //- title(ng-bind="tlCtrl.title")
+    title()= "test"
+
+  body(ng-cloack, layout="column")
+    div(flex, layout="row")
+      div(ui-view="content", layout="column", flex="100")
+
+    script(type='text/javascript', src="app-build/app.min.js")
+

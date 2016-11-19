@@ -1,0 +1,46 @@
+{
+  "name": "cft",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "setup": "npm i & npm run build",
+    "build": "./node_modules/.bin/webpack --env=dev",
+    "build:prod": "./node_modules/.bin/webpack --env=prod"
+  },
+  "dependencies": {
+    "body-parser": "1.15.1",
+    "cookie-parser": "1.4.3",
+    "debug": "2.2.0",
+    "express": "4.13.4",
+    "jade": "1.11.0",
+    "morgan": "1.7.0",
+    "serve-favicon": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/angular": "1.5.20",
+    "@types/angular-material": "1.1.41",
+    "@types/angular-ui-router": "1.1.34",
+    "angular": "1.5.8",
+    "angular-animate": "1.5.8",
+    "angular-aria": "1.5.8",
+    "angular-material": "1.1.1",
+    "angular-ui-router": "0.3.2",
+    "babel": "6.5.2",
+    "babel-core": "6.18.2",
+    "babel-loader": "6.2.8",
+    "babel-preset-es2015": "6.18.0",
+    "babel-preset-stage-0": "6.16.0",
+    "css-loader": "0.26.0",
+    "eslint": "3.10.2",
+    "file-loader": "0.9.0",
+    "html-minify-loader": "1.1.0",
+    "image-webpack-loader": "3.0.0",
+    "less": "2.7.1",
+    "less-loader": "2.2.3",
+    "raw-loader": "0.5.1",
+    "style-loader": "0.13.1",
+    "url-loader": "0.5.7",
+    "webpack": "1.13.3"
+  }
+}
