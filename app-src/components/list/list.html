@@ -3,6 +3,8 @@
 </div>
 
 <md-content ng-if="!lsCtrl.showPreloader">
+
+  <!--filter and order-->
   <div layout="row">
     <md-input-container style="margin-right: 10px;">
       <label>Order by</label>
@@ -17,26 +19,18 @@
         <md-option ng-repeat="direction in lsCtrl.orderDirections" value="{{direction}}">{{direction}}</md-option>
       </md-select>
     </md-input-container>
-  </div>
 
-  <div layout="row">
     <md-input-container style="margin-right: 10px;">
-      <label>Filter by category</label>
+      <label>Filter</label>
       <md-select ng-model="lsCtrl.appliedCategoryFilter">
         <md-option ng-repeat="category in lsCtrl.availableCategories" value="{{category}}">{{category}}</md-option>
       </md-select>
     </md-input-container>
   </div>
 
-  <div layout="row">
-    <md-input-container style="margin-right: 10px;">
-      <label>Page size</label>
-      <md-select ng-model="lsCtrl.pageSize">
-        <md-option ng-repeat="size in lsCtrl.availablePageSizes" value="{{size}}">{{size}}</md-option>
-      </md-select>
-    </md-input-container>
-  </div>
-
+  <!--table-->
+  <!--better to use smth like https://github.com/daniel-nagy/md-data-table
+    but it's way beyond 3-4 required hours-->
   <md-list>
     <div class="md-list-item-text" layout="row">
       <div flex="20">Title</div>
@@ -61,5 +55,25 @@
       </md-button>
     </md-list-item>
   </md-list>
+
+  <!--pagination-->
+  <div layout="row">
+    <md-input-container style="margin-right: 10px;">
+      <label>Page size</label>
+      <md-select ng-model="lsCtrl.pageSize">
+        <md-option ng-repeat="size in lsCtrl.availablePageSizes" value="{{size}}">{{size}}</md-option>
+      </md-select>
+    </md-input-container>
+
+    <section layout="row" layout-align="center center" layout-wrap>
+      <md-button
+        ng-repeat="page in lsCtrl.pages track by page.num"
+        class="md-raised {{page.num === lsCtrl.currentPage ? 'md-primary' : ''}}"
+        ng-click="lsCtrl.setPage(page.num)"
+      >
+        {{page.num}}
+      </md-button>
+    </section>
+  </div>
 
 </md-content>

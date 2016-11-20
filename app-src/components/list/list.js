@@ -10,6 +10,7 @@ export function ListController($scope, ItemsService, UtilsService)
 window['vm'] = vm;
   vm.showPreloader = ItemsService.refreshCounter === 0;
 
+  // table ordering
   vm.orderOptions =
   [
     'Title',
@@ -39,23 +40,28 @@ window['vm'] = vm;
     [vm.orderField, vm.orderDirection] = JSON.parse( localStorage.getItem('cft-test-item-order') );
   }
   catch (err) {}
+  // \table ordering
 
 
   vm.availableCategories = ['All'];
   vm.appliedCategoryFilter = 'All';
 
-
+  // pagination
   vm.availablePageSizes = [ 'All', 1, 2, 3];
   vm.pageSize = +localStorage.getItem('cft-test-page-size') || 'All';
-  var pagePointer = 0;
+  vm.pages = [];  // displayed number, empty if mode 'All'
+  vm.currentPage = 1;
+  // \pagination
 
 
-  // wait for service to get data
+  // there are already data, get them
   if (ItemsService.refreshCounter > 0)
   {
     copyItems();
   }
 
+  // dynamic refresh from the server not implemented
+  // thus fired once, if /list is an app enter point
   $scope.$watch(
     () => ItemsService.refreshCounter,
     newVal =>
@@ -77,13 +83,39 @@ window['vm'] = vm;
     { // retrieved some sorting
       resortItems();
     }
-    applyPageFilter();
+    recalculatePages();
 
     vm.showPreloader = false;
   }
 
+  /** catefory filter changed */
+  // this way it looks more complex, but eliminates multiple repetitive filtering and sorting of the whole dataset
+  $scope.$watch(
+    () => vm.appliedCategoryFilter,
+    (newVal, oldVal) =>
+    {
+      if (newVal && newVal !== oldVal)
+      {
+        applyCategoryFilter();
+        resortItems();
+        recalculatePages();
+      }
+    }
+  );
 
-  // watch sorting
+  function applyCategoryFilter()
+  { // filter storage not required
+    if (vm.appliedCategoryFilter === 'All')
+    {
+      vm.filteredByCategoryItems = vm.items;
+    }
+    else
+    {
+      vm.filteredByCategoryItems = vm.items.filter( e => e.categoryName === vm.appliedCategoryFilter);
+    }
+  }
+
+  /** sorting changed */
   $scope.$watch(
     () => vm.orderField,
     (newVal, oldVal) =>
@@ -91,6 +123,7 @@ window['vm'] = vm;
       if (newVal && newVal !== oldVal)
       {
         resortItems();
+        recalculatePages();
       }
     }
   );
@@ -101,7 +134,7 @@ window['vm'] = vm;
       if (newVal && newVal !== oldVal)
       {
         resortItems();
-        applyPageFilter();
+        recalculatePages();
       }
     }
   );
@@ -124,35 +157,6 @@ window['vm'] = vm;
     }
   }
 
-  // this way it looks more complex, but eliminates multiple repetitive filtering and sorting of the whole dataset
-  $scope.$watch(
-    () => vm.appliedCategoryFilter,
-    (newVal, oldVal) =>
-    {
-      if (newVal && newVal !== oldVal)
-      {
-        applyCategoryFilter();
-        resortItems();
-        // recalculate current page
-        // !here!
-        applyPageFilter();
-      }
-    }
-  );
-
-  function applyCategoryFilter()
-  {
-    if (vm.appliedCategoryFilter === 'All')
-    {
-      vm.filteredByCategoryItems = vm.items;
-    }
-    else
-    {
-      vm.filteredByCategoryItems = vm.items.filter( e => e.categoryName === vm.appliedCategoryFilter);
-    }
-  }
-
-
 
   // handlePageSizeChange
   $scope.$watch(
@@ -162,44 +166,62 @@ window['vm'] = vm;
       if (newVal && newVal !== oldval)
       {
         localStorage.setItem('cft-test-page-size', vm.pageSize !== 'All' ? vm.pageSize : '' );
-        applyPageFilter();
+        recalculatePages();
       }
     }
   );
 
-  function applyPageFilter()
+  function recalculatePages()
   {
+    vm.currentPage = 1;
+
     if (vm.pageSize !== 'All')
     {
-      vm.pagedItems =
-        vm.filteredByCategoryItems
-        .filter(
-          (e, index) => (index >= vm.pageSize * pagePointer) && (index < vm.pageSize * (pagePointer+1))
-        );
+      vm.pagedItems = vm.filteredByCategoryItems.slice(0, vm.pageSize);
+
+      vm.pages = [];
+      for (var num = 1; num <= Math.ceil(vm.filteredByCategoryItems.length/vm.pageSize); num++)
+      { // first active by default
+        vm.pages.push({
+          num, active: num === 1
+        });
+      }
     }
     else
     {
-      vm.pagedItems = vm.filteredByCategoryItems;
+      vm.pagedItems = vm.filteredByCategoryItems.slice(0);
+      vm.pages = [];
     }
   }
 
-  // function handlePageSizeChange(pageSize)
-  // {
-  //   // save page size
-  //   localStorage.setItem('cft-test-page-size', pageSize !== 'All' ? pageSize : '' );
-  // }
-
-  // vm.filterByPage =
-  //   function filterByPage(item, index)
-  //   {
-  //     if (vm.pageSize === 'All')
-  //     {
-  //       return true;
-  //     }
-  //     else
-  //     {
-  //       return (index >= vm.pageSize * pagePointer) && (index < (vm.pageSize+1) * pagePointer);
-  //     }
-  //   };
+  vm.setPage = pageNum =>
+  {
+    if (pageNum <= vm.pages.length && pageNum > 0)
+    {
+      vm.currentPage = pageNum;
+    }
+    vm.pagedItems = vm.filteredByCategoryItems.slice(
+      (pageNum - 1) * vm.pageSize,
+      pageNum * vm.pageSize
+    );
+  };
 
 }
+
+
+/**
+ * first page is always enter point - no requirenment provided for keeping previous in memory
+ *
+ * possible user actions:
+ * - select filter by category
+ *    -> filter initial list
+ *    -> apply ordering if any
+ *    -> recalculate pages, back to first   // assume new query, no need to stay on the same page
+ *
+ * - select order prop and direction
+ *    -> apply new order to filtered list
+ *    -> recalculate pages, back to first
+ *
+ * - change page size
+ *    -> recalculate pages, back to first   // here logic is not clear, therefore not required, not implemented
+ */
