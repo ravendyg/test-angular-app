@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
-const db = require('../lib/db/db-items');
+const dbItems = require('../lib/db/db-items');
+const dbReviews = require('../lib/db/db-reviews');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -15,8 +16,8 @@ router.get(
   (req, res) =>
   {
     Promise.all([
-      db.getCategories(),
-      db.getItems()
+      dbItems.getCategories(),
+      dbItems.getItems()
     ])
     .then(
       ([categories, items]) =>
@@ -28,6 +29,27 @@ router.get(
       err =>
       {
         res.json({categories: {}, items: []});
+      }
+    );
+  }
+);
+
+router.get(
+  '/reviews/:id',
+  (req, res) =>
+  {
+    dbReviews.getReviews(+req.params.id)
+    .then(
+      reviews =>
+      {
+        res.json({reviews});
+      }
+    )
+    .catch(
+      err =>
+      {
+        console.error(err, 'get reviews route');
+        res.json({reviews: []});
       }
     );
   }

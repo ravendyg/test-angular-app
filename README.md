@@ -54,3 +54,40 @@ response:
   }
 }
 ```
+
+### Get liost of reviews for specified items
+```
+GET /reviews/:id
+
+application/json
+
+response:
+{
+  reviews:
+  {
+    id: number,
+    content: string,
+    rating: number,
+    item: number
+  } []
+}
+```
+
+### Add review for specified item
+```
+POST /reviews
+
+application/json
+
+data:
+{
+  content: string,
+  rating: number,
+  itemId: number
+}
+
+response:
+{
+  status: 'created'
+}
+```

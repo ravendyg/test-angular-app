@@ -10,7 +10,7 @@ export function ReviewDialogController($scope, $mdDialog, ReviewsService, item)
 
   vm.newReview =
   {
-    text: '',
+    content: '',
     rating: 1
   };
 
@@ -30,8 +30,8 @@ export function ReviewDialogController($scope, $mdDialog, ReviewsService, item)
 
   // methods
   vm.reviewIncorrect =
-    () => (vm.newReview.text.length <= 0 ||
-          vm.newReview.text.length > vm.reviewMaxLength) ||
+    () => (vm.newReview.content.length <= 0 ||
+          vm.newReview.content.length > vm.reviewMaxLength) ||
           (vm.newReview.rating <= 0 ||
           vm.newReview.rating > 5)
           ;

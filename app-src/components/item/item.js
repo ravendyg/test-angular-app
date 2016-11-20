@@ -33,7 +33,6 @@ export function ItemController($scope, $state, $mdDialog, ItemsService, ReviewsS
   {
     itemId = +$state.params.id;
     vm.item = ItemsService.getItemById(itemId);
-    console.log(vm.item);
 
     vm.showPreloader = false;
   }
@@ -57,5 +56,4 @@ export function ItemController($scope, $state, $mdDialog, ItemsService, ReviewsS
     });
   };
 
-  console.log('item controller');
 }

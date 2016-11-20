@@ -37,12 +37,12 @@ export function ReviewsService($http)
     .catch( () => {} );
   }
 
-  function sendReview({text, rating}, itemId)
+  function sendReview({content, rating}, itemId)
   {
     $http({
       method: 'POST',
       url: '/reviews',
-      data: {text, rating, itemId}
+      data: {content, rating, itemId}
     });
 
     if (selectedItem === itemId)
