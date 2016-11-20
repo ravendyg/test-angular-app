@@ -3,9 +3,9 @@
 ### External dependencies
 Node v4.4.1
 
-### Setup
+### Installation
 ```
-npm run setup // install dependencies and build in dev mode
+npm i // install dependencies
 ```
 
 ### Build
