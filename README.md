@@ -1,7 +1,7 @@
 ## Test work with angular and angular-material
 
 ### External dependencies
-Node v4.4.1
+Node v6.8.1
 
 MySQL 5.7.16
 
@@ -24,4 +24,33 @@ npm run build:prod  // build in production mode (minification, no source maps, u
 ### Server start
 ```
 npm start
+```
+
+
+## API
+
+### Get items and categories
+```
+GET /items
+
+application/json
+
+response:
+{
+	items:
+  {
+    id: number,
+    sku: string,
+    name: string,
+    description: string,
+    amount: number,
+    img: string,
+    category: number,
+    created: number       // UNIX timestamp
+  } [],
+  categories:
+  {
+    [id: string] : string
+  }
+}
 ```

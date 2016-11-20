@@ -47,7 +47,7 @@
       <md-button class="md-no-style" ui-sref="item({id: item.id})">
         <div class="md-list-item-text" layout="row">
           <div flex="20">{{item.name}}</div>
-          <div flex="20">{{item.date | UnixDateToDotString}}</div>
+          <div flex="20">{{item.created | UnixDateToDotString}}</div>
           <div flex="20">{{item.categoryName}}</div>
           <div flex="20">{{item.amount | AmountToWord}}</div>
           <div flex="20">{{item.sku}}</div>

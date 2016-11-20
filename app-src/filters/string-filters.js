@@ -7,7 +7,7 @@ export function UnixDateToDotString()
     var date, out;
     try
     {
-      date = new Date(input);
+      date = new Date(input * 1000);
       out =
       [
         indentZero(date.getDate()),
