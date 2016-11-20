@@ -30,15 +30,17 @@ export function ReviewDialogController($scope, $mdDialog, ReviewsService, item)
 
   // methods
   vm.reviewIncorrect =
-    () => (vm.newReview.content.length <= 0 ||
-          vm.newReview.content.length > vm.reviewMaxLength) ||
+    () => (!vm.newReview.content ||
+          vm.newReview.content.length <= 0 ||
+          vm.newReview.content.length > vm.reviewMaxLength
+          ) ||
           (vm.newReview.rating <= 0 ||
           vm.newReview.rating > 5)
           ;
 
   vm.sendReview = () =>
   {
-    if (!vm.reviewIncorrect)
+    if (!vm.reviewIncorrect())
     {
       ReviewsService.sendReview(vm.newReview, item.id);
     }

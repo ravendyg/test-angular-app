@@ -79,15 +79,21 @@ POST /reviews
 
 application/json
 
-data:
+body:
 {
   content: string,
   rating: number,
-  itemId: number
+  item: number
 }
 
 response:
 {
-  status: 'created'
+  review:
+  {
+    id: number,
+    content: string,
+    rating: number,
+    item: number
+  }
 }
 ```

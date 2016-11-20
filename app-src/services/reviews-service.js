@@ -42,15 +42,18 @@ export function ReviewsService($http)
     $http({
       method: 'POST',
       url: '/reviews',
-      data: {content, rating, itemId}
-    });
-
-    if (selectedItem === itemId)
-    {
-      self.reviews.push({
-        ext, rating
-      });
-      self.refreshIndex++;
-    }
+      data: {content, rating, item: itemId}
+    })
+    .then(
+      resp =>
+      {
+        if (selectedItem === itemId)
+        {
+          self.reviews.push(resp.data.review);
+          self.refreshIndex++;
+        }
+      }
+    )
+    .catch( () => {} );
   }
 }

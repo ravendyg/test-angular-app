@@ -3,6 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
+const config = require('../lib/config');
+
 const dbItems = require('../lib/db/db-items');
 const dbReviews = require('../lib/db/db-reviews');
 
@@ -52,6 +54,40 @@ router.get(
         res.json({reviews: []});
       }
     );
+  }
+);
+
+router.post(
+  '/reviews',
+  (req, res) =>
+  {
+    if (!req.body.content ||
+      !(req.body.rating > 0 && req.body.rating <= 5) ||
+      typeof req.body.item !== 'number'
+    )
+    {
+      res.status(400).json({status: 'bad data'});
+    }
+    else
+    {
+      dbReviews.createReview({
+        content: req.body.content.slice(0, config.REVIEW_SIZE_LIMIT),
+        rating: req.body.rating,
+        item: req.body.item
+      })
+      .then(
+        review =>
+        {
+          res.json({review});
+        }
+      )
+      .catch(
+        () =>
+        {
+          res.status(400).json({status: 'bad data'});
+        }
+      );
+    }
   }
 );
 
