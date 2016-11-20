@@ -24,6 +24,8 @@ npm run build:prod  // build in production mode (minification, no source maps, u
 ### Server start
 ```
 npm start
+
+pm2 start process.json  // start using pm2
 ```
 
 
@@ -55,7 +57,7 @@ response:
 }
 ```
 
-### Get liost of reviews for specified items
+### Get list of reviews forthe specified items
 ```
 GET /reviews/:id
 
@@ -73,7 +75,7 @@ response:
 }
 ```
 
-### Add review for specified item
+### Add review for the specified item
 ```
 POST /reviews
 
