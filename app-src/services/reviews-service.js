@@ -37,7 +37,7 @@ export function ReviewsService($http)
     .catch( () => {} );
   }
 
-  function sendReview({content, rating}, itemId)
+  function sendReview({content, rating}, itemId, cb)
   {
     $http({
       method: 'POST',
@@ -51,6 +51,7 @@ export function ReviewsService($http)
         {
           self.reviews.push(resp.data.review);
           self.refreshIndex++;
+          cb();
         }
       }
     )

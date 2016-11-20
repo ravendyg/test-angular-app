@@ -1,0 +1,6 @@
+<span ng-click="rtClCtrl.setRating($event)" class="rating-stars clickable">
+  <i ng-repeat="st in rtClCtrl.ratingRender track by st.i"
+    class="fa fa-star{{st.val}}"
+    data-id="{{st.i}}">
+  </i>
+</span>

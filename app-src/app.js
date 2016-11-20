@@ -9,8 +9,10 @@ import * as angularMaterial from 'angular-material';
 
 
 // controllers
-import { ListController } from './components/list/list.js';
-import { ItemController } from './components/item/item.js';
+import { ListController }   from './components/list/list.js';
+import { ItemController }   from './components/item/item.js';
+
+import { RatingController } from './components/rating/rating.js';
 
 // services
 import { UtilsService }   from './services/utils-service.js';
@@ -70,10 +72,37 @@ angular.module('cft')
   .controller('ItemController',
     ['$scope', '$state', '$mdDialog', 'ItemsService', 'ReviewsService',
     ItemController])
+    .controller('RatingController', ['$scope', RatingController])
 
   .service('UtilsService', [UtilsService])
   .service('ItemsService', ['$http', '$timeout', 'UtilsService', ItemsService])
   .service('ReviewsService', ['$http', ReviewsService])
+
+  // directives
+     .directive('ratingStatic', function () {
+        return {
+            restrict: 'E',
+            scope:
+            {
+              rating: '@'
+            },
+            replace: true,
+            template: require('./components/rating/rating.html'),
+            controller: 'RatingController as rtCtrl'
+        }
+     })
+     .directive('ratingClickable', function () {
+        return {
+          restrict: 'E',
+          scope:
+          {
+            rating: '='
+          },
+          replace: true,
+          template: require('./components/rating/rating-clickable.html'),
+          controller: 'RatingController as rtClCtrl'
+        }
+     })
 
   .filter('UnixDateToDotString', [UnixDateToDotString])
   .filter('CapFirstLetters', [CapFirstLetters])

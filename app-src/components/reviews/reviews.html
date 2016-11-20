@@ -1,4 +1,4 @@
-<md-dialog aria-label="{{rvCtrl.item.name}} reviews">
+<md-dialog aria-label="{{rvCtrl.item.name}} reviews" style="min-width: 80%;">
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -19,6 +19,7 @@
       </md-input-container>
 
       <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+        <rating-clickable rating="rvCtrl.newReview.rating"></rating-clickable>
         <md-button
           ng-click="rvCtrl.sendReview()"
           ng-disabled="rvCtrl.reviewIncorrect()"
@@ -30,7 +31,7 @@
       <div class="md-dialog-content">
         <div ng-repeat="review in rvCtrl.reviews track by review.id">
           <p>{{review.content}}</p>
-          <p>{{review.rating}}</p>
+          <rating-static rating="{{review.rating}}"></rating-static>
         </div>
       </div>
     </md-dialog-content>

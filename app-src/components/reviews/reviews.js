@@ -11,7 +11,7 @@ export function ReviewDialogController($scope, $mdDialog, ReviewsService, item)
   vm.newReview =
   {
     content: '',
-    rating: 1
+    rating: 0
   };
 
   // force refresh
@@ -42,9 +42,19 @@ export function ReviewDialogController($scope, $mdDialog, ReviewsService, item)
   {
     if (!vm.reviewIncorrect())
     {
-      ReviewsService.sendReview(vm.newReview, item.id);
+      ReviewsService.sendReview(
+        vm.newReview,
+        item.id,
+        resetNewReview
+      );
     }
   };
+
+  function resetNewReview()
+  {
+    vm.newReview.content = '';
+    vm.newReview.rating = 0;
+  }
 }
 
 export var ReviewDialogTemplate = require('./reviews.html');
