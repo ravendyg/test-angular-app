@@ -47,8 +47,12 @@ window['vm'] = vm;
   vm.appliedCategoryFilter = 'All';
 
   // pagination
-  vm.availablePageSizes = [ 'All', 1, 2, 3];
+  vm.availablePageSizes = [ 'All', 5, 10, 15];
   vm.pageSize = +localStorage.getItem('cft-test-page-size') || 'All';
+  if (vm.availablePageSizes.indexOf(vm.pageSize) === -1)
+  {
+    vm.pageSize = 'All';
+  }
   vm.pages = [];  // displayed number, empty if mode 'All'
   vm.currentPage = 1;
   // \pagination

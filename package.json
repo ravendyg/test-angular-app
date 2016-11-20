@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "setup": "node ./lib/db/setup-db.js & npm run build",
+    "setup": "node ./lib/db/db-setup.js & npm run build",
     "build": "./node_modules/.bin/webpack --env=dev",
     "build:prod": "./node_modules/.bin/webpack --env=prod"
   },
