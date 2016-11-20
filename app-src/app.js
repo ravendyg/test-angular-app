@@ -12,6 +12,8 @@ import * as angularMaterial from 'angular-material';
 import { ListController }   from './components/list/list.js';
 import { ItemController }   from './components/item/item.js';
 
+import { ReviewDialogController } from './components/reviews/reviews.js';
+
 import { RatingController } from './components/rating/rating.js';
 
 // services
@@ -26,16 +28,18 @@ import { AmountToWord } from './filters/amount-filters.js';
 
 
 angular.module( 'cft', ['ngMaterial', 'ui.router'] )
-  .config(function($mdThemingProvider, $mdIconProvider, $httpProvider, $stateProvider, $urlRouterProvider)
-  {
-    $mdIconProvider
+  .config(
+    ['$mdThemingProvider', '$mdIconProvider', '$httpProvider', '$stateProvider', '$urlRouterProvider',
+    function($mdThemingProvider, $mdIconProvider, $httpProvider, $stateProvider, $urlRouterProvider)
+    {
+      $mdIconProvider
         .icon("preloader", "svg/preloader.svg", 48);
 
-    $mdThemingProvider.theme('default')
+      $mdThemingProvider.theme('default')
         .primaryPalette('green')
         .accentPalette('red');
 
-    $stateProvider
+      $stateProvider
         .state(
           'list', {
             url: '/',
@@ -63,46 +67,49 @@ angular.module( 'cft', ['ngMaterial', 'ui.router'] )
         })
         ;
 
-    $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/');
 
-});
+  }]);
 
 angular.module('cft')
   .controller('ListController', ['$scope', 'ItemsService', 'UtilsService', ListController])
   .controller('ItemController',
-    ['$scope', '$state', '$mdDialog', 'ItemsService', 'ReviewsService',
+    ['$scope', '$state', '$mdDialog', 'ItemsService',
     ItemController])
-    .controller('RatingController', ['$scope', RatingController])
+  .controller('RatingController', ['$scope', RatingController])
+  .controller('ReviewDialogController',
+    ['$scope', '$mdDialog', 'ReviewsService', 'item', ReviewDialogController]
+  )
 
   .service('UtilsService', [UtilsService])
   .service('ItemsService', ['$http', '$timeout', 'UtilsService', ItemsService])
   .service('ReviewsService', ['$http', ReviewsService])
 
   // directives
-     .directive('ratingStatic', function () {
-        return {
-            restrict: 'E',
-            scope:
-            {
-              rating: '@'
-            },
-            replace: true,
-            template: require('./components/rating/rating.html'),
-            controller: 'RatingController as rtCtrl'
-        }
-     })
-     .directive('ratingClickable', function () {
-        return {
-          restrict: 'E',
-          scope:
-          {
-            rating: '='
-          },
-          replace: true,
-          template: require('./components/rating/rating-clickable.html'),
-          controller: 'RatingController as rtClCtrl'
-        }
-     })
+  .directive('ratingStatic', function () {
+    return {
+      restrict: 'E',
+      scope:
+      {
+        rating: '@'
+      },
+      replace: true,
+      template: require('./components/rating/rating.html'),
+      controller: 'RatingController as rtCtrl'
+    }
+  })
+  .directive('ratingClickable', function () {
+    return {
+      restrict: 'E',
+      scope:
+      {
+        rating: '='
+      },
+      replace: true,
+      template: require('./components/rating/rating-clickable.html'),
+      controller: 'RatingController as rtClCtrl'
+    }
+  })
 
   .filter('UnixDateToDotString', [UnixDateToDotString])
   .filter('CapFirstLetters', [CapFirstLetters])

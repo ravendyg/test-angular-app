@@ -1,8 +1,8 @@
 'use strict';
 
-import { ReviewDialogController, ReviewDialogTemplate } from '../reviews/reviews.js';
+import { ReviewDialogTemplate } from '../reviews/reviews.js';
 
-export function ItemController($scope, $state, $mdDialog, ItemsService, ReviewsService)
+export function ItemController($scope, $state, $mdDialog, ItemsService)
 {
   var vm = this;
 
@@ -40,14 +40,13 @@ export function ItemController($scope, $state, $mdDialog, ItemsService, ReviewsS
   vm.showReviews = event =>
   {
     $mdDialog.show({
-      controller: ReviewDialogController,
-      controllerAs: 'rvCtrl',
+      controller: 'ReviewDialogController as rvCtrl',
       template: ReviewDialogTemplate,
       parent: angular.element(document.body),
       targetEvent: event,
       clickOutsideToClose:true,
       fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
-      locals: { ReviewsService, item: vm.item }
+      locals: { item: vm.item }
     })
     .then(function(answer) {
       $scope.status = 'You said the information was "' + answer + '".';

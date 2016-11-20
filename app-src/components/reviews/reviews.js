@@ -3,7 +3,7 @@
 export function ReviewDialogController($scope, $mdDialog, ReviewsService, item)
 {
   var vm = this;
-
+debugger;
   vm.item = item;
   vm.reviews = [];
   vm.reviewMaxLength = 150;
