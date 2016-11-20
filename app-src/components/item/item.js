@@ -1,6 +1,8 @@
 'use strict';
 
-export function ItemController($scope, $state, ItemsService)
+import { ReviewDialogController, ReviewDialogTemplate } from '../reviews/reviews.js';
+
+export function ItemController($scope, $state, $mdDialog, ItemsService, ReviewsService)
 {
   var vm = this;
 
@@ -35,6 +37,25 @@ export function ItemController($scope, $state, ItemsService)
 
     vm.showPreloader = false;
   }
+
+  vm.showReviews = event =>
+  {
+    $mdDialog.show({
+      controller: ReviewDialogController,
+      controllerAs: 'rvCtrl',
+      template: ReviewDialogTemplate,
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose:true,
+      fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+      locals: { ReviewsService, item: vm.item }
+    })
+    .then(function(answer) {
+      $scope.status = 'You said the information was "' + answer + '".';
+    }, function() {
+      $scope.status = 'You cancelled the dialog.';
+    });
+  };
 
   console.log('item controller');
 }

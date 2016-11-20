@@ -1,0 +1,39 @@
+<md-dialog aria-label="{{rvCtrl.item.name}} reviews">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{rvCtrl.item.name}} reviews</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+
+      <md-dialog-content>
+        <md-input-container class="md-block">
+        <label>New Review</label>
+        <textarea
+          ng-model="rvCtrl.newReview.text"
+          md-maxlength="rvCtrl.reviewMaxLength"
+          rows="2"
+          md-select-on-focus
+        ></textarea>
+      </md-input-container>
+
+      <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+        <md-button
+          ng-click="rvCtrl.sendReview()"
+          ng-disabled="rvCtrl.reviewIncorrect()"
+        >
+          Send Review
+        </md-button>
+      </section>
+
+      <div class="md-dialog-content">
+        <div ng-repeat="review in rvCtrl.reviews track by review.id">
+          <p>{{review.text}}</p>
+          <p>{{review.rating}}</p>
+        </div>
+      </div>
+    </md-dialog-content>
+
+  </form>
+</md-dialog>

@@ -13,7 +13,7 @@
    <p>Available: {{itCtrl.item.amount | AmountToWord}}</p>
  </md-card-content>
  <md-card-actions layout="row" layout-align="end center">
-   <md-button>Reviews</md-button>
+   <md-button ng-click="itCtrl.showReviews($event)">Reviews</md-button>
    <md-button ui-sref="list">Back to list</md-button>
  </md-card-actions>
 </md-card>
