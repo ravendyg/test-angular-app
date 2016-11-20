@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "setup": "npm i & npm run build",
+    "setup": "node ./lib/db/setup-db.js & npm run build",
     "build": "./node_modules/.bin/webpack --env=dev",
     "build:prod": "./node_modules/.bin/webpack --env=prod"
   },
@@ -15,6 +15,7 @@
     "express": "4.13.4",
     "jade": "1.11.0",
     "morgan": "1.7.0",
+    "mysql": "2.12.0",
     "serve-favicon": "2.3.0"
   },
   "devDependencies": {
